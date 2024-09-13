@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Lista todos os arquivos na pasta atual
-DIR = 'data/'
+DIR= 'data/'
 for file in "$DIR"/*; do
   # Verifica se é um arquivo (e não um diretório)
   if [ -f "$file" ]; then
