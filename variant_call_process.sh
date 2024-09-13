@@ -17,7 +17,7 @@ for file in "$DIR"/*; do
     gatk MarkDuplicates -I output/{$filename}.align.sorted.coord.bam -O output/{$filename}.align.sorted.coord.dedup.bam -M output/ERR050095.align.sorted.coord.dedup.metric.txt
 
     gatk BaseRecalibrator \
-        -I output/${ERR050095}.align.sorted.coord.dedup.bam \
+        -I output/{$filename}.align.sorted.coord.dedup.bam \
         -R reference/hg38.fa \
         --known-sites data/Homo_sapiens_assembly38.dbsnp138.vcf \
         -O output/recal_data.table 
