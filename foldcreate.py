@@ -1,47 +1,68 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Wed Sep 11 11:57:05 2024
+Editor Spyder
 
-@author: jrodolfo
+Este é um arquivo de script temporário.
 """
-import json
-import csv
-import requests
+
+folders = ['data','results','scripts','output','tools' ]
 import os
-links=[]
+import argparse
+import shutil
 
-def create_json():
-    with open('igsr_samples.tsv', mode='r', newline='', encoding='utf-8') as file:
-        reader = csv.reader(file, delimiter='\t')
-        for row in reader:
-            sample = {"ID":f"{row[0]}",
-                    "url":f"ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/MXL/{row[0]}/alignment/{row[0]}.alt_bwamem_GRCh38DH.20150718.MXL.low_coverage.cram",
-                    "BIOSAMPLE":f"{row[2]}",
-                    "population":f"{row[3]}",
-                    "sex":f"{row[1]}"}
-            links.append(sample) 
+def create_directory(folder_name):
+    # Verifica se o diretório já existe
+    if not os.path.exists(folder_name):
+        # Cria o diretório
+        os.makedirs(folder_name)
+        print(f'Pasta "{folder_name}" criada com sucesso!')
+    else:
+        print(f'Pasta "{folder_name}" já existe.')
 
-    with open("sample.json","w") as file:
-        json.dump(links, file)
-
-def downcohort(jason: json):
-    for sample in jason:
-        response = requests.get(sample["url"], stream=True)
-        if response.status_code == 200:
-            print("Download feito com sucesso")
+    for i in folders:
+        subfolder_path = os.path.join(folder_name, i)
+        if not os.path.exists(subfolder_path):
+            os.makedirs(subfolder_path)
+            print(f'Subpasta "{i}" criada com sucesso dentro de "{folder_name}"!')
         else:
-            print(f'Não foi possível baixar o alinhamento para a amostra {sample["ID"]}')
-            continue
-        
-        output_dir = "data/"
-        output_file = os.path.join(output_dir,f"{sample["ID"]}.bam")
-        if not os.path.exists(output_dir):
-            print("Você ainda não criou a pasta data/ com o foldcreate")
-            
-        with open(output_file, 'wb') as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                if chunk:
-                    f.write(chunk)
+            print(f'Subpasta "{i}" já existe dentro de "{folder_name}".')
 
-        print(f"Download concluído para {sample["ID"]}!")
+
+
+    def copiar_pasta():
+        origem="/home/jrodolfo/Documents/projetos/SRR28738518"
+        destino=f"/home/jrodolfo/Documents/projetos/{folder_name}/reference/"
+        # Verifica se o diretório de origem existe
+        if not os.path.exists(origem):
+            print(f"A pasta de origem '{origem}' não existe.")
+            return
+
+        # Verifica se o destino já existe
+#        if os.path.exists(destino):
+#            print(f"O destino '{destino}' já existe. Escolha outro destino ou remova a pasta existente.")
+#            return
+
+        try:
+            # Copia a pasta de origem para o destino
+            shutil.copytree(origem, destino)
+            print(f"A pasta '{origem}' foi copiada com sucesso para '{destino}'.")
+        except Exception as e:
+            print(f"Erro ao copiar a pasta: {e}")
+
+    if __name__ == "__main__":
+
+
+        # Chama a função para copiar a pasta
+        copiar_pasta()
+
+
+if __name__ == "__main__":
+    # Define o parser de argumentos
+    parser = argparse.ArgumentParser(description="Cria uma pasta com o nome fornecido.")
+    parser.add_argument("folder_name", type=str, help="Nome da pasta a ser criada.")
+
+    # Obtém o argumento da linha de comando
+    args = parser.parse_args()
+
+    # Cria o diretório com o nome fornecido
+    create_directory(args.folder_name)
