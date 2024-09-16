@@ -1,29 +1,47 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Editor Spyder
+Created on Wed Sep 11 11:57:05 2024
 
-Este é um arquivo de script temporário.
+@author: jrodolfo
 """
-
+import json
+import csv
+import requests
 import os
-import argparse
+links=[]
 
-def create_directory(folder_name):
-    # Verifica se o diretório já existe
-    if not os.path.exists(folder_name):
-        # Cria o diretório
-        os.makedirs(folder_name)
-        print(f'Pasta "{folder_name}" criada com sucesso!')
-    else:
-        print(f'Pasta "{folder_name}" já existe.')
+def create_json():
+    with open('igsr_samples.tsv', mode='r', newline='', encoding='utf-8') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            sample = {"ID":f"{row[0]}",
+                    "url":f"ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/MXL/{row[0]}/alignment/{row[0]}.alt_bwamem_GRCh38DH.20150718.MXL.low_coverage.cram",
+                    "BIOSAMPLE":f"{row[2]}",
+                    "population":f"{row[3]}",
+                    "sex":f"{row[1]}"}
+            links.append(sample) 
 
-if __name__ == "__main__":
-    # Define o parser de argumentos
-    parser = argparse.ArgumentParser(description="Cria uma pasta com o nome fornecido.")
-    parser.add_argument("folder_name", type=str, help="Nome da pasta a ser criada.")
+    with open("sample.json","w") as file:
+        json.dump(links, file)
 
-    # Obtém o argumento da linha de comando
-    args = parser.parse_args()
+def downcohort(jason: json):
+    for sample in jason:
+        response = requests.get(sample["url"], stream=True)
+        if response.status_code == 200:
+            print("Download feito com sucesso")
+        else:
+            print(f'Não foi possível baixar o alinhamento para a amostra {sample["ID"]}')
+            continue
+        
+        output_dir = "data/"
+        output_file = os.path.join(output_dir,f"{sample["ID"]}.bam")
+        if not os.path.exists(output_dir):
+            print("Você ainda não criou a pasta data/ com o foldcreate")
+            
+        with open(output_file, 'wb') as f:
+            for chunk in response.iter_content(chunk_size=8192):
+                if chunk:
+                    f.write(chunk)
 
-    # Cria o diretório com o nome fornecido
-    create_directory(args.folder_name)
+        print(f"Download concluído para {sample["ID"]}!")
