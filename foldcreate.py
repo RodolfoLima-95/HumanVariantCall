@@ -30,8 +30,10 @@ def create_directory(folder_name):
 
 
     def copiar_pasta():
+        origem=str(os.getcwd())
+        destino=f"{origem}/{folder_name}/reference/"
         origem="/home/jrodolfo/projects/genomes"
-        destino=f"/home/jrodolfo/projects/genomes/{folder_name}/reference/"
+        destino=f"/home/jrodolfo/projects/genomes/{folder_name}/reference/" 
         # Verifica se o diretório de origem existe
         if not os.path.exists(origem):
             print(f"A pasta de origem '{origem}' não existe.")

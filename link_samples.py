@@ -15,8 +15,9 @@ def create_json():
     with open('igsr_samples.tsv', mode='r', newline='', encoding='utf-8') as file:
         reader = csv.reader(file, delimiter='\t')
         for row in reader:
-            sample = {"ID":f"{row[0]}",
-                    "url":f"ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/MXL/{row[0]}/alignment/{row[0]}.alt_bwamem_GRCh38DH.20150718.MXL.low_coverage.cram",
+            sample = {
+                    "ID":f"{row[0]}",
+                    "url":f"ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000_genomes_project/data/MXL/{row[0]}/alignment/{row[0]}.alt_bwamem_GRCh38DH.20150718.MXL.low_coverage.bam",
                     "BIOSAMPLE":f"{row[2]}",
                     "population":f"{row[3]}",
                     "sex":f"{row[1]}"}
