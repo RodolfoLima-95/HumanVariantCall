@@ -6,7 +6,6 @@ Este é um arquivo de script temporário.
 """
 
 import os
-import sys
 import argparse
 
 def create_directory(folder_name):

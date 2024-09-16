@@ -1,0 +1,84 @@
+# Arquivos e diretórios de dependências Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Arquivos de pacotes
+*.whl
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Arquivos de teste de cobertura de código
+htmlcov/
+.tox/
+.nox/
+.coverage
+coverage.xml
+*.cover
+*.py,cover
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+*.sublime-workspace
+
+# Arquivos do VSCode
+.vscode/
+*.code-workspace
+
+# Arquivos do Jupyter Notebook
+.ipynb_checkpoints/
+
+# Arquivos de configurações do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de banco de dados e caches locais
+*.sqlite3
+*.db
+*.sqlite
+*.pdb
+
+# Arquivos de Docker
+Dockerfile
+docker-compose.yml
+
+# Arquivos do PyInstaller
+# Se você estiver criando binários com PyInstaller, ignore os diretórios de saída.
+build/
+dist/
+*.spec
+
+# Arquivos gerados pelo mypy (verificação de tipos)
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Arquivos do pytest
+.pytest_cache/
+
+# Arquivos de ferramentas de linting
+.pylint.d/
+
+# Arquivos do editor e IDEs
+.idea/
